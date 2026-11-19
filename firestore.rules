@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /pengaturan/{id} {
+      allow read: if id == 'akses_admin';
+      allow write: if false;
+    }
+    match /{koleksi}/{id} {
+      allow read: if koleksi in ['pekerja','absensi','borongan','kasbon','pembayaran'];
+      // PERINGATAN: akses tulis publik, PIN di browser tidak melindungi database.
+      allow create, update, delete: if koleksi in ['pekerja','absensi','borongan','kasbon','pembayaran'];
+    }
+  }
+}
