@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == 'GANTI_DENGAN_UID_ADMIN';
+    }
+    match /pengaturan/{id} {
+      allow read: if id == 'akses_admin' && isAdmin();
+      allow write: if false;
+    }
+    match /{koleksi}/{id} {
+      allow read: if koleksi in ['pekerja','absensi','borongan','kasbon','pembayaran'];
+      allow create, update, delete: if koleksi in ['pekerja','absensi','borongan','kasbon','pembayaran'] && isAdmin();
+    }
+  }
+}
