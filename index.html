@@ -1,0 +1,2061 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Presensi</title>
+
+<style>
+:root{
+    font-family:system-ui,-apple-system,sans-serif;
+    color:#17312f;
+    background:#f1f6f5;
+}
+*{box-sizing:border-box}
+body{margin:0}
+.wrap{max-width:1050px;margin:auto;padding:16px}
+header{
+    background:#0f766e;
+    color:white;
+    padding:10px;
+    border-radius:0 0 22px 22px;
+}
+header h1{margin:0;font-size:23px}
+header p{opacity:.85;margin:6px 0;font-size:13px}
+button,input,select,textarea{font:inherit}
+button{
+    border:0;
+    border-radius:12px;
+    padding:12px 15px;
+    background:#0f766e;
+    color:white;
+    font-weight:650;
+    cursor:pointer;
+}
+button.secondary{background:#e0eeeb;color:#14534c}
+button.danger{background:#b42318}
+button:disabled{opacity:.5}
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #cbdad6;
+    border-radius:11px;
+    background:white;
+}
+label{
+    display:block;
+    font-size:13px;
+    font-weight:650;
+    margin:10px 0 5px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+.card{
+    background:white;
+    border:1px solid #dce8e4;
+    border-radius:17px;
+    padding:16px;
+    margin:13px 0;
+    box-shadow:0 2px 9px #153d3208;
+}
+.grid .card{margin:0}
+.metric{
+    font-size:23px;
+    font-weight:750;
+    margin:7px 0;
+    overflow-wrap:anywhere;
+}
+.muted{color:#657b75;font-size:13px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{
+    display:flex;
+    gap:7px;
+    overflow:auto;
+    padding:12px 0;
+}
+.tabs button{
+    white-space:nowrap;
+    background:#e0eeeb;
+    color:#13574d;
+}
+.tabs button.active{background:#0f766e;color:white}
+.hidden{display:none!important}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{
+    text-align:left;
+    border-bottom:1px solid #e5ece9;
+    padding:10px 7px;
+    white-space:nowrap;
+}
+th{color:#526d65}
+dialog{
+    border:0;
+    border-radius:18px;
+    padding:20px;
+    width:min(94vw,440px);
+    max-height:90dvh;
+    overflow-y:auto;
+    box-shadow:0 20px 80px #0004;
+}
+dialog::backdrop{background:#0c302e88}
+.notice{
+    background:#fff4d7;
+    padding:12px;
+    border-radius:12px;
+    font-size:13px;
+}
+.ok{color:#0f766e}
+.red{color:#b42318}
+.row{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+}
+.smallbtn{padding:7px 9px;font-size:12px}
+footer{
+    padding:25px;
+    text-align:center;
+    color:#78918a;
+    font-size:12px;
+}
+.quick-wage{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:7px;
+    margin-top:10px;
+}
+.quick-wage button{
+    padding:10px 7px;
+    font-size:13px;
+    background:#e0eeeb;
+    color:#14534c;
+}
+.quick-wage button.active{
+    background:#0f766e;
+    color:white;
+}
+.wage-preview{
+    background:#eaf5f1;
+    border:1px solid #c8e3d8;
+    padding:15px;
+    border-radius:12px;
+    margin-top:15px;
+}
+.wage-preview .metric{margin-bottom:0;color:#0f766e}
+#upahAbsensi{font-size:22px;font-weight:700;color:#0f766e}
+
+.worker-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));
+    gap:14px;
+}
+.worker-card{
+    border:1px solid #dce8e4;
+    border-radius:15px;
+    overflow:hidden;
+    background:white;
+}
+.worker-head{
+    background:#0f766e;
+    color:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+}
+.worker-head h3{
+    margin:0;
+    font-size:18px;
+    overflow-wrap:anywhere;
+}
+.worker-body{padding:12px}
+.salary-box{
+    background:#f3f8f6;
+    border:1px solid #dce8e4;
+    border-radius:11px;
+    padding:12px;
+    margin-bottom:10px;
+}
+.salary-title{
+    font-size:12px;
+    font-weight:800;
+    color:#0f766e;
+    margin-bottom:10px;
+    letter-spacing:.5px;
+}
+.salary-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    padding:5px 0;
+}
+.salary-row strong{
+    text-align:right;
+    white-space:nowrap;
+}
+.salary-line{
+    border-top:1px solid #d6e4df;
+    margin:6px 0;
+}
+.salary-total{
+    background:#e6f3ee;
+    padding:13px;
+    border-radius:12px;
+    margin-top:12px;
+}
+.salary-total .metric{margin:5px 0 0}
+.badge{
+    border-radius:20px;
+    padding:5px 9px;
+    font-size:10px;
+    font-weight:800;
+    white-space:nowrap;
+}
+.badge-paid{background:#d5f5e3;color:#146c43}
+.badge-unpaid{background:#ffe1dc;color:#b42318}
+.badge-over{background:#fff0bd;color:#805600}
+.general-box{
+    background:#fff8e5;
+    border:1px solid #f0dfac;
+}
+.general-box .salary-title{color:#805600}
+.search-box{margin-bottom:14px}
+@media(max-width:500px){
+    .wrap{padding:12px}
+    .card{padding:12px}
+    .metric{font-size:19px}
+    .worker-grid{grid-template-columns:1fr}
+    .salary-total .metric{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="wrap">
+        <div class="row">
+            <div>
+                <h1>PRESENSI</h1>
+                <p>Absensi • Borongan • Kasbon • Penggajian</p>
+            </div>
+            <button class="secondary" id="loginBtn">Admin</button>
+        </div>
+    </div>
+</header>
+
+<main class="wrap">
+
+    <div id="setup" class="notice hidden">
+        Firebase belum dikonfigurasi.
+        Isi <b>firebaseConfig</b> pada file <b>config.js</b>.
+    </div>
+
+    <div id="status" class="muted">
+        Menghubungkan Firebase…
+    </div>
+
+    <div class="grid" id="metrics" style="margin-top:12px"></div>
+
+    <div class="tabs" id="tabs">
+        <button data-tab="ringkasan" class="active">Ringkasan</button>
+        <button data-tab="pekerja">Pekerja</button>
+        <button data-tab="absensi">Absensi</button>
+        <button data-tab="borongan">Borongan</button>
+        <button data-tab="kasbon">Kasbon</button>
+        <button data-tab="pembayaran">Bayar Gaji</button>
+    </div>
+
+    <section id="content" class="card"></section>
+
+    <div id="adminTools" class="card hidden">
+        <h3>Input Admin</h3>
+        <p class="muted">
+            Tindakan tersimpan online.
+            PIN hanya mengunci tampilan, bukan izin database.
+        </p>
+        <div class="actions" id="actionButtons"></div>
+    </div>
+
+</main>
+
+<footer>
+    Data ditampilkan langsung dari Cloud ndis.database
+</footer>
+
+<dialog id="dlg">
+    <div class="row">
+        <h3 id="dlgTitle">Input</h3>
+        <button class="secondary smallbtn"
+            onclick="document.getElementById('dlg').close()">✕</button>
+    </div>
+
+    <form id="entryForm">
+        <div id="fields"></div>
+
+        <div class="actions" style="margin-top:15px">
+            <button type="submit" id="saveBtn">Simpan</button>
+            <button type="button" class="secondary"
+                onclick="document.getElementById('dlg').close()">
+                Batal
+            </button>
+        </div>
+    </form>
+</dialog>
+
+<dialog id="authDlg">
+    <h3>Masuk Admin</h3>
+    <p class="muted">Masukkan PIN 6 digit dari Firestore.</p>
+
+    <form id="authForm">
+        <label>PIN Admin</label>
+        <input id="pin"
+            type="password"
+            inputmode="numeric"
+            pattern="[0-9]{6}"
+            maxlength="6"
+            autocomplete="off"
+            required>
+
+        <p id="authError" class="muted"></p>
+
+        <div class="actions">
+            <button type="submit">Masuk</button>
+            <button type="button" class="secondary"
+                onclick="document.getElementById('authDlg').close()">
+                Batal
+            </button>
+        </div>
+    </form>
+</dialog>
+
+<script src="config.js"></script>
+
+<script type="module">
+
+import {
+    initializeApp
+} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+
+import {
+    getFirestore,
+    collection,
+    onSnapshot,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+    getDoc
+} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
+const $ = id => document.getElementById(id);
+
+const money = n =>
+    'Rp' + (Number(n) || 0).toLocaleString('id-ID');
+
+const esc = s => String(s ?? '').replace(
+    /[&<>"']/g,
+    c => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#39;'
+    }[c])
+);
+
+let db;
+let tab = 'ringkasan';
+let admin = false;
+let editing = null;
+let kind = '';
+let searchWorker = '';
+
+let data = {
+    pekerja:[],
+    absensi:[],
+    borongan:[],
+    kasbon:[],
+    pembayaran:[]
+};
+
+const collections = Object.keys(data);
+
+const titles = {
+    pekerja:'Pekerja',
+    absensi:'Absensi',
+    borongan:'Borongan',
+    kasbon:'Kasbon',
+    pembayaran:'Pembayaran Gaji'
+};
+
+const fmtDate = d =>
+    d ? new Date(d + 'T12:00:00').toLocaleDateString('id-ID') : '';
+
+const today = () => {
+    let d = new Date();
+
+    return [
+        d.getFullYear(),
+        String(d.getMonth()+1).padStart(2,'0'),
+        String(d.getDate()).padStart(2,'0')
+    ].join('-');
+};
+
+const pname = (id,x) =>
+    x?.namaManual ||
+    data.pekerja.find(p => p.id === id)?.nama ||
+    'Pekerja dihapus';
+
+const norm = n =>
+    String(n || '')
+        .trim()
+        .replace(/\s+/g,' ')
+        .toLocaleLowerCase('id-ID');
+
+const workerName = x => pname(x.pekerjaId,x);
+
+const workerNames = () => [
+    ...new Map([
+        ...data.pekerja.map(p => p.nama),
+        ...data.absensi.map(workerName),
+        ...data.borongan.map(workerName),
+        ...data.kasbon.map(workerName),
+        ...data.pembayaran.map(workerName)
+    ].filter(n => n).map(n => [norm(n),n])).values()
+].sort((a,b) => a.localeCompare(b,'id'));
+
+
+/* =========================================
+   PILIH PEKERJA
+========================================= */
+
+const workerSelect = x => `
+    <label>Nama pekerja</label>
+
+    <select name="pekerjaId" id="pilihPekerja">
+        <option value="">-- Pilih / ketik manual --</option>
+
+        ${workerNames()
+            .filter(n => n !== 'Pekerja dihapus')
+            .map(n => {
+
+            let p = data.pekerja.find(
+                p => norm(p.nama) === norm(n)
+            );
+
+            let selected = x
+                ? norm(workerName(x)) === norm(n)
+                : false;
+
+            return `
+                <option
+                    value="${esc(p?.id || 'manual:' + n)}"
+                    ${selected ? 'selected' : ''}>
+                    ${esc(n)}
+                </option>
+            `;
+
+        }).join('')}
+
+        ${x?.pekerjaId &&
+          !data.pekerja.some(p => p.id === x.pekerjaId) &&
+          !x.namaManual
+            ? `<option value="${esc(x.pekerjaId)}" selected>
+                Pekerja dihapus
+               </option>`
+            : ''}
+    </select>
+
+    <label>Atau ketik nama baru</label>
+
+    <input name="namaManual"
+        id="namaPekerjaManual"
+        type="text"
+        value="${esc(
+            x?.namaManual &&
+            !workerNames().some(
+                n => norm(n) === norm(x.namaManual)
+            ) ? x.namaManual : ''
+        )}"
+        placeholder="Nama pekerja">
+`;
+
+
+/* =========================================
+   KATEGORI TRANSAKSI
+========================================= */
+
+const kategori = x => {
+
+    let v = norm(
+        x?.kategori ||
+        x?.jenisPembayaran ||
+        x?.jenisKasbon ||
+        'umum'
+    );
+
+    return ['harian','borongan'].includes(v)
+        ? v
+        : 'umum';
+};
+
+const kategoriLabel = x => ({
+    harian:'Harian',
+    borongan:'Borongan',
+    umum:'Umum'
+})[kategori(x)];
+
+const kategoriField = (x,k) => `
+
+    <label>
+        ${k === 'kasbon'
+            ? 'Jenis Kasbon / DP'
+            : 'Jenis Pembayaran Gaji'}
+    </label>
+
+    <select name="kategori" required>
+
+        ${[
+            ['harian','Upah Harian'],
+            ['borongan','Upah Borongan'],
+            ['umum','Umum / Belum Dikategorikan']
+        ].map(([v,l]) => `
+
+            <option value="${v}"
+                ${(x ? kategori(x) : 'harian') === v
+                    ? 'selected'
+                    : ''}>
+                ${l}
+            </option>
+
+        `).join('')}
+
+    </select>
+
+    <p class="muted">
+        Pilih kategori sesuai peruntukan transaksi.
+        Kategori Umum tetap mengurangi total sisa gaji.
+    </p>
+
+`;
+
+
+/* =========================================
+   PERHITUNGAN UPAH ABSENSI
+========================================= */
+
+const wage = a => {
+
+    const upah = Number(a.upah || 0);
+
+    if(a.status === 'Hadir'){
+        return upah;
+    }
+
+    if(a.status === 'Setengah Hari'){
+        return upah / 2;
+    }
+
+    return 0;
+};
+
+
+/* =========================================
+   REKAP GAJI TERPISAH
+========================================= */
+
+function sums(pid){
+
+    let target = pid ? norm(pid) : null;
+
+    let pick = k => data[k].filter(x =>
+        !target || norm(workerName(x)) === target
+    );
+
+    let h = pick('absensi').reduce(
+        (s,x) => s + wage(x),0
+    );
+
+    let b = pick('borongan').reduce(
+        (s,x) => s +
+        Number(x.jumlah || 0) *
+        Number(x.tarif || 0),0
+    );
+
+    let kasbon = pick('kasbon');
+    let pembayaran = pick('pembayaran');
+
+    const sumKategori = (arr,kat) =>
+        arr.filter(x => kategori(x) === kat)
+            .reduce(
+                (s,x) => s + Number(x.nominal || 0),0
+            );
+
+    let kh = sumKategori(kasbon,'harian');
+    let kb = sumKategori(kasbon,'borongan');
+    let ku = sumKategori(kasbon,'umum');
+
+    let ph = sumKategori(pembayaran,'harian');
+    let pb = sumKategori(pembayaran,'borongan');
+    let pu = sumKategori(pembayaran,'umum');
+
+    let k = kh + kb + ku;
+    let p = ph + pb + pu;
+
+    let sisaHarian = h - kh - ph;
+    let sisaBorongan = b - kb - pb;
+
+    let totalUpah = h + b;
+
+    let sisa = totalUpah - k - p;
+
+    return {
+        h,b,k,p,
+        kh,kb,ku,
+        ph,pb,pu,
+        totalUpah,
+        sisaHarian,
+        sisaBorongan,
+        sisa
+    };
+}
+
+
+/* =========================================
+   KARTU RINGKASAN PEKERJA
+========================================= */
+
+const salaryRow = (label,value,cls='') => `
+    <div class="salary-row">
+        <span>${esc(label)}</span>
+        <strong class="${cls}">${money(value)}</strong>
+    </div>
+`;
+
+function workerCard(n){
+
+    let t = sums(n);
+
+    let status = t.sisa > 0
+        ? 'BELUM LUNAS'
+        : t.sisa < 0
+            ? 'LEBIH BAYAR'
+            : 'LUNAS';
+
+    let badgeClass = t.sisa > 0
+        ? 'badge-unpaid'
+        : t.sisa < 0
+            ? 'badge-over'
+            : 'badge-paid';
+
+    let umum = t.ku !== 0 || t.pu !== 0;
+
+    return `
+
+        <div class="worker-card">
+
+            <div class="worker-head">
+
+                <h3>${esc(n)}</h3>
+
+                <span class="badge ${badgeClass}">
+                    ${status}
+                </span>
+
+            </div>
+
+            <div class="worker-body">
+
+                <div class="salary-box">
+
+                    <div class="salary-title">
+                        UPAH HARIAN
+                    </div>
+
+                    ${salaryRow('Total upah harian',t.h)}
+
+                    ${salaryRow('Kasbon harian',t.kh)}
+
+                    ${salaryRow('Harian dibayar',t.ph,'ok')}
+
+                    <div class="salary-line"></div>
+
+                    ${salaryRow(
+                        umum ? 'Saldo harian teralokasi' : 'Sisa harian',
+                        t.sisaHarian,
+                        t.sisaHarian > 0 ? 'red' : 'ok'
+                    )}
+
+                </div>
+
+                <div class="salary-box">
+
+                    <div class="salary-title">
+                        UPAH BORONGAN
+                    </div>
+
+                    ${salaryRow('Total upah borongan',t.b)}
+
+                    ${salaryRow('Kasbon / DP borongan',t.kb)}
+
+                    ${salaryRow('Borongan dibayar',t.pb,'ok')}
+
+                    <div class="salary-line"></div>
+
+                    ${salaryRow(
+                        umum ? 'Saldo borongan teralokasi' : 'Sisa borongan',
+                        t.sisaBorongan,
+                        t.sisaBorongan > 0 ? 'red' : 'ok'
+                    )}
+
+                </div>
+
+                ${umum ? `
+
+                    <div class="salary-box general-box">
+
+                        <div class="salary-title">
+                            TRANSAKSI UMUM
+                        </div>
+
+                        ${salaryRow('Kasbon umum',t.ku)}
+
+                        ${salaryRow('Pembayaran umum',t.pu)}
+
+                        <p class="muted">
+                            Transaksi ini belum dialokasikan
+                            ke harian atau borongan,
+                            tetapi sudah mengurangi total
+                            sisa gaji.
+                            Edit transaksi untuk menentukan
+                            kategorinya.
+                        </p>
+
+                    </div>
+
+                ` : ''}
+
+                <div class="salary-box">
+
+                    <div class="salary-title">
+                        TOTAL KESELURUHAN
+                    </div>
+
+                    ${salaryRow('Total pendapatan',t.totalUpah)}
+
+                    ${salaryRow('Total kasbon',t.k)}
+
+                    ${salaryRow('Total gaji dibayar',t.p,'ok')}
+
+                    ${salaryRow('Total uang diterima',t.k+t.p,'ok')}
+
+                </div>
+
+                <div class="salary-total">
+
+                    <div class="muted">
+
+                        ${t.sisa < 0
+                            ? 'TOTAL KELEBIHAN BAYAR'
+                            : 'TOTAL GAJI BELUM DIBAYAR'}
+
+                    </div>
+
+                    <div class="metric ${t.sisa > 0 ? 'red' : 'ok'}">
+
+                        ${money(Math.abs(t.sisa))}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+function renderWorkerCards(){
+
+    let el = $('workerCards');
+
+    if(!el) return;
+
+    let names = workerNames().filter(n =>
+        norm(n).includes(norm(searchWorker))
+    );
+
+    el.innerHTML = names.length
+        ? names.map(workerCard).join('')
+        : '<p class="muted">Tidak ada pekerja.</p>';
+}
+
+
+/* =========================================
+   TAMPILAN UTAMA
+========================================= */
+
+function render(){
+
+    let s = sums();
+
+    $('metrics').innerHTML = [
+
+        ['Jumlah Pekerja',
+            workerNames().filter(n =>
+                n !== 'Pekerja dihapus'
+            ).length],
+
+        ['Upah Harian',money(s.h)],
+
+        ['Upah Borongan',money(s.b)],
+
+        ['Total Pendapatan',money(s.totalUpah)],
+
+        ['Total Kasbon',money(s.k)],
+
+        ['Gaji Dibayar',money(s.p)],
+
+        ['Total Uang Diterima',money(s.k+s.p)],
+
+        ['Saldo Gaji Bersih',money(s.sisa)]
+
+    ].map(([k,v]) => `
+
+        <div class="card">
+            <div class="muted">${k}</div>
+            <div class="metric">${v}</div>
+        </div>
+
+    `).join('');
+
+    document.querySelectorAll('[data-tab]').forEach(b =>
+        b.classList.toggle(
+            'active',
+            b.dataset.tab === tab
+        )
+    );
+
+    $('adminTools').classList.toggle('hidden',!admin);
+
+    $('actionButtons').innerHTML = (
+        tab === 'ringkasan'
+            ? collections
+            : [tab]
+    ).map(k => `
+
+        <button data-new="${k}">
+            + ${titles[k]}
+        </button>
+
+    `).join('');
+
+    document.querySelectorAll('[data-new]').forEach(b => {
+        b.onclick = () => formFor(b.dataset.new);
+    });
+
+
+    /* RINGKASAN */
+
+    if(tab === 'ringkasan'){
+
+        $('content').innerHTML = `
+
+            <h3>Rekap Seluruh Pekerja</h3>
+
+            <input
+                type="search"
+                id="searchWorker"
+                class="search-box"
+                placeholder="Cari nama pekerja..."
+                value="${esc(searchWorker)}">
+
+            <div class="worker-grid" id="workerCards"></div>
+
+        `;
+
+        $('searchWorker').oninput = e => {
+            searchWorker = e.target.value;
+            renderWorkerCards();
+        };
+
+        renderWorkerCards();
+
+        return;
+    }
+
+
+    /* HEADER TABEL */
+
+    let headers = {
+
+        pekerja:[
+            'Nama',
+            'Upah Default / Hari',
+            'Jam Kerja',
+            'Jenis Pekerjaan'
+        ],
+
+        absensi:[
+            'Tanggal',
+            'Pekerja',
+            'Status',
+            'Upah',
+            'Catatan'
+        ],
+
+        borongan:[
+            'Tanggal',
+            'Pekerja',
+            'Pekerjaan',
+            'Jumlah',
+            'Tarif',
+            'Total'
+        ],
+
+        kasbon:[
+            'Tanggal',
+            'Pekerja',
+            'Kategori',
+            'Nominal',
+            'Catatan'
+        ],
+
+        pembayaran:[
+            'Tanggal',
+            'Pekerja',
+            'Kategori',
+            'Nominal',
+            'Catatan'
+        ]
+
+    };
+
+
+    /* ISI TABEL */
+
+    let rows = data[tab]
+        .slice()
+        .sort((a,b) =>
+            (b.tanggal || '').localeCompare(a.tanggal || '')
+        )
+        .map(x => {
+
+            let v;
+
+            if(tab === 'pekerja'){
+
+                v = [
+                    x.nama,
+                    money(x.upah),
+                    `${x.mulai || '-'}–${x.selesai || '-'}`,
+                    x.pekerjaan || '-'
+                ];
+
+            }else if(tab === 'absensi'){
+
+                v = [
+                    fmtDate(x.tanggal),
+                    workerName(x),
+                    x.status,
+                    money(wage(x)),
+                    x.catatan || '-'
+                ];
+
+            }else if(tab === 'borongan'){
+
+                v = [
+                    fmtDate(x.tanggal),
+                    workerName(x),
+                    x.pekerjaan,
+                    `${x.jumlah} ${x.satuan || 'unit'}`,
+                    money(x.tarif),
+                    money(x.jumlah * x.tarif)
+                ];
+
+            }else{
+
+                v = [
+                    fmtDate(x.tanggal),
+                    workerName(x),
+                    kategoriLabel(x),
+                    money(x.nominal),
+                    x.catatan || '-'
+                ];
+
+            }
+
+            if(admin){
+
+                v.push({
+
+                    actions:true,
+
+                    html:`
+
+                        <button class="secondary smallbtn"
+                            data-edit="${esc(tab+':'+x.id)}">
+                            Edit
+                        </button>
+
+                        <button class="danger smallbtn"
+                            data-delete="${esc(tab+':'+x.id)}">
+                            Hapus
+                        </button>
+
+                    `
+
+                });
+
+            }
+
+            return v;
+
+        });
+
+    $('content').innerHTML = `
+
+        <h3>
+
+            ${({
+                pekerja:'Daftar Pekerja',
+                absensi:'Riwayat Absensi',
+                borongan:'Pekerjaan Borongan',
+                kasbon:'Riwayat Kasbon',
+                pembayaran:'Pembayaran Gaji'
+            })[tab]}
+
+        </h3>
+
+    ` + makeTable(
+
+        [
+            ...headers[tab],
+            ...(admin ? ['Aksi'] : [])
+        ],
+
+        rows
+
+    );
+
+    document.querySelectorAll('[data-edit]').forEach(b => {
+
+        b.onclick = () => {
+
+            let [k,id] = b.dataset.edit.split(':');
+
+            formFor(
+                k,
+                data[k].find(x => x.id === id)
+            );
+
+        };
+
+    });
+
+    document.querySelectorAll('[data-delete]').forEach(b => {
+        b.onclick = () => remove(b.dataset.delete);
+    });
+
+}
+
+
+/* =========================================
+   MEMBUAT TABEL
+========================================= */
+
+function makeTable(head,rows){
+
+    return `
+
+        <div class="tablewrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+
+                        ${head.map(h => `
+                            <th>${esc(h)}</th>
+                        `).join('')}
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${rows.length ? rows.map(r => `
+
+                        <tr>
+
+                            ${r.map(v => `
+
+                                <td>
+
+                                    ${v && typeof v === 'object' && v.actions
+                                        ? v.html
+                                        : esc(v)}
+
+                                </td>
+
+                            `).join('')}
+
+                        </tr>
+
+                    `).join('') : `
+
+                        <tr>
+                            <td colspan="${head.length}">
+                                Belum ada data.
+                            </td>
+                        </tr>
+
+                    `}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================
+   INPUT FIELD
+========================================= */
+
+const field = (
+    name,
+    label,
+    type='text',
+    val='',
+    extra=''
+) => `
+
+    <label>${label}</label>
+
+    <input
+        name="${name}"
+        type="${type}"
+        value="${esc(val)}"
+        ${extra}
+        required>
+
+`;
+
+
+/* =========================================
+   FORM TAMBAH DAN EDIT
+========================================= */
+
+function formFor(k,x=null){
+
+    if(!admin) return;
+
+    kind = k;
+    editing = x?.id || null;
+
+    $('dlgTitle').textContent =
+        (x ? 'Edit ' : 'Tambah ') + titles[k];
+
+    let date = field(
+        'tanggal',
+        'Tanggal',
+        'date',
+        x?.tanggal || today()
+    );
+
+    let workers = `
+
+        <label>Pekerja</label>
+
+        <select name="pekerjaId"
+            id="absensiPekerja"
+            required>
+
+            ${x?.pekerjaId &&
+              !data.pekerja.some(p => p.id === x.pekerjaId)
+                ? `<option value="${esc(x.pekerjaId)}" selected>
+                    Pekerja dihapus
+                   </option>`
+                : ''}
+
+            ${data.pekerja.map(p => `
+
+                <option
+                    value="${esc(p.id)}"
+                    ${x?.pekerjaId === p.id ? 'selected' : ''}>
+
+                    ${esc(p.nama)}
+
+                </option>
+
+            `).join('')}
+
+        </select>
+
+    `;
+
+    if(k === 'absensi' && !data.pekerja.length && !x){
+
+        alert('Tambahkan pekerja dahulu.');
+
+        return;
+    }
+
+    if(['borongan','kasbon','pembayaran'].includes(k)){
+        workers = workerSelect(x);
+    }
+
+    let fields = '';
+
+
+    /* FORM PEKERJA */
+
+    if(k === 'pekerja'){
+
+        fields =
+
+            field(
+                'nama',
+                'Nama Pekerja',
+                'text',
+                x?.nama || ''
+            ) +
+
+            field(
+                'upah',
+                'Upah Default per Hari (Rp)',
+                'number',
+                x?.upah ?? 50000,
+                'min="0" step="1"'
+            ) +
+
+            `<p class="muted">
+                Upah default hanya sebagai nominal awal.
+                Upah dapat diubah setiap input absensi.
+            </p>` +
+
+            field(
+                'mulai',
+                'Jam mulai',
+                'time',
+                x?.mulai || '19:00'
+            ) +
+
+            field(
+                'selesai',
+                'Jam selesai',
+                'time',
+                x?.selesai || '22:00'
+            ) +
+
+            field(
+                'pekerjaan',
+                'Jenis pekerjaan utama',
+                'text',
+                x?.pekerjaan || 'Harian'
+            );
+
+    }
+
+
+    /* FORM ABSENSI */
+
+    else if(k === 'absensi'){
+
+        let p = data.pekerja.find(
+            p => p.id === x?.pekerjaId
+        ) || data.pekerja[0];
+
+        fields = date + workers + `
+
+            <label>Status</label>
+
+            <select name="status" id="statusAbsensi">
+
+                ${[
+                    'Hadir',
+                    'Tidak Hadir',
+                    'Setengah Hari',
+                    'Izin',
+                    'Sakit',
+                    'Libur'
+                ].map(v => `
+
+                    <option
+                        ${x?.status === v ? 'selected' : ''}>
+                        ${v}
+                    </option>
+
+                `).join('')}
+
+            </select>
+
+            <div id="wageInputArea">
+
+                <label>Upah Hari Ini (Rp)</label>
+
+                <input
+                    name="upah"
+                    id="upahAbsensi"
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step="1"
+                    value="${esc(x?.upah ?? p?.upah ?? 0)}"
+                    required>
+
+                <div class="quick-wage">
+
+                    ${[
+                        50000,
+                        75000,
+                        100000,
+                        150000
+                    ].map(n => `
+
+                        <button type="button" data-upah="${n}">
+                            ${money(n)}
+                        </button>
+
+                    `).join('')}
+
+                </div>
+
+                <button
+                    type="button"
+                    class="secondary smallbtn"
+                    id="resetUpah"
+                    style="margin-top:9px">
+
+                    Gunakan Upah Default
+
+                </button>
+
+                <p class="muted">
+                    Nominal upah dapat diubah sesuai
+                    pekerjaan dan tambahan lembur.
+                    Setengah Hari dihitung 50%.
+                </p>
+
+            </div>
+
+            <label>Catatan Pekerjaan / Lembur</label>
+
+            <textarea
+                name="catatan"
+                rows="2"
+                placeholder="Contoh: Lembur tambahan 3 jam"
+            >${esc(x?.catatan || '')}</textarea>
+
+            <div class="wage-preview">
+
+                <div class="muted">
+                    Total Upah Hari Ini
+                </div>
+
+                <div class="metric" id="previewUpah">
+                    Rp0
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* FORM BORONGAN */
+
+    else if(k === 'borongan'){
+
+        fields = date + workers +
+
+            field(
+                'pekerjaan',
+                'Jenis pekerjaan',
+                'text',
+                x?.pekerjaan || 'Isi polybag'
+            ) +
+
+            field(
+                'jumlah',
+                'Jumlah',
+                'number',
+                x?.jumlah ?? 1,
+                'min="0" step="any"'
+            ) +
+
+            field(
+                'satuan',
+                'Satuan',
+                'text',
+                x?.satuan || 'polybag'
+            ) +
+
+            field(
+                'tarif',
+                'Tarif per satuan (Rp)',
+                'number',
+                x?.tarif ?? 0,
+                'min="0" step="any"'
+            ) +
+
+            `<div class="wage-preview">
+
+                <div class="muted">Total Upah Borongan</div>
+
+                <div class="metric" id="previewBorongan">
+                    Rp0
+                </div>
+
+            </div>`;
+
+    }
+
+
+    /* FORM KASBON DAN PEMBAYARAN */
+
+    else{
+
+        fields = date + workers +
+
+            kategoriField(x,k) +
+
+            field(
+                'nominal',
+                'Nominal (Rp)',
+                'number',
+                x?.nominal ?? 0,
+                'min="0" step="1"'
+            ) +
+
+            `<label>Catatan</label>
+
+            <textarea
+                name="catatan"
+                rows="3"
+                placeholder="Keterangan transaksi"
+            >${esc(x?.catatan || '')}</textarea>`;
+
+    }
+
+    $('fields').innerHTML = fields;
+
+
+    /* LOGIKA UPAH ABSENSI */
+
+    if(k === 'absensi'){
+
+        const sel = $('absensiPekerja');
+        const upah = $('upahAbsensi');
+        const status = $('statusAbsensi');
+
+        const updatePreview = () => {
+
+            const total = wage({
+                status:status.value,
+                upah:Number(upah.value) || 0
+            });
+
+            $('previewUpah').textContent = money(total);
+
+            const dibayar = [
+                'Hadir',
+                'Setengah Hari'
+            ].includes(status.value);
+
+            $('wageInputArea').classList.toggle(
+                'hidden',
+                !dibayar
+            );
+
+            upah.required = dibayar;
+
+            $('fields')
+                .querySelectorAll('[data-upah]')
+                .forEach(btn => {
+
+                    btn.classList.toggle(
+                        'active',
+                        Number(btn.dataset.upah) ===
+                        Number(upah.value)
+                    );
+
+                });
+
+        };
+
+        const setDefaultWage = () => {
+
+            let p = data.pekerja.find(
+                p => p.id === sel.value
+            );
+
+            if(p){
+                upah.value = p.upah ?? 0;
+            }
+
+            updatePreview();
+        };
+
+        sel.addEventListener('change',setDefaultWage);
+
+        $('resetUpah').onclick = setDefaultWage;
+
+        upah.addEventListener('input',updatePreview);
+
+        status.addEventListener('change',updatePreview);
+
+        $('fields')
+            .querySelectorAll('[data-upah]')
+            .forEach(btn => {
+
+                btn.onclick = () => {
+
+                    upah.value = btn.dataset.upah;
+
+                    updatePreview();
+
+                };
+
+            });
+
+        updatePreview();
+    }
+
+
+    /* PREVIEW BORONGAN */
+
+    if(k === 'borongan'){
+
+        const jumlah = $('fields')
+            .querySelector('[name="jumlah"]');
+
+        const tarif = $('fields')
+            .querySelector('[name="tarif"]');
+
+        const updateBorongan = () => {
+
+            $('previewBorongan').textContent = money(
+                Number(jumlah.value || 0) *
+                Number(tarif.value || 0)
+            );
+
+        };
+
+        jumlah.addEventListener('input',updateBorongan);
+
+        tarif.addEventListener('input',updateBorongan);
+
+        updateBorongan();
+    }
+
+
+    /* INPUT NAMA MANUAL */
+
+    if(['borongan','kasbon','pembayaran'].includes(k)){
+
+        let sel = $('pilihPekerja');
+        let inp = $('namaPekerjaManual');
+
+        const sync = () => {
+
+            inp.disabled = !!sel.value;
+
+            inp.required = !sel.value;
+
+            if(sel.value){
+                inp.value = '';
+            }
+
+        };
+
+        sel.addEventListener('change',sync);
+
+        sync();
+    }
+
+    $('dlg').showModal();
+}
+
+
+/* =========================================
+   SIMPAN DATA KE FIRESTORE
+========================================= */
+
+$('entryForm').onsubmit = async e => {
+
+    e.preventDefault();
+
+    if(!admin) return;
+
+    if(!db){
+
+        alert('Firebase belum terhubung.');
+
+        return;
+    }
+
+    let obj = Object.fromEntries(
+        new FormData(e.target).entries()
+    );
+
+
+    /* NAMA PEKERJA MANUAL */
+
+    if(['borongan','kasbon','pembayaran'].includes(kind)){
+
+        obj.namaManual = (obj.namaManual || '')
+            .trim()
+            .replace(/\s+/g,' ');
+
+        if(obj.pekerjaId?.startsWith('manual:')){
+
+            obj.namaManual = obj.pekerjaId.slice(7);
+
+            obj.pekerjaId = '';
+
+        }
+
+        if(!obj.pekerjaId && !obj.namaManual){
+
+            alert('Pilih pekerja atau isi nama manual.');
+
+            return;
+        }
+
+        if(obj.pekerjaId){
+
+            obj.namaManual = '';
+
+        }else{
+
+            let registered = data.pekerja.find(
+                p => norm(p.nama) === norm(obj.namaManual)
+            );
+
+            if(registered){
+
+                obj.pekerjaId = registered.id;
+
+                obj.namaManual = '';
+
+            }
+
+        }
+
+    }
+
+
+    /* KONVERSI NOMINAL */
+
+    for(let n of ['upah','jumlah','tarif','nominal']){
+
+        if(n in obj){
+
+            obj[n] = Number(obj[n]);
+
+            if(!Number.isFinite(obj[n]) || obj[n] < 0){
+
+                alert('Nominal atau jumlah tidak valid.');
+
+                return;
+            }
+
+        }
+
+    }
+
+
+    /* VALIDASI NAMA PEKERJA */
+
+    if(kind === 'pekerja'){
+
+        obj.nama = (obj.nama || '')
+            .trim()
+            .replace(/\s+/g,' ');
+
+        if(!obj.nama){
+
+            alert('Nama pekerja wajib diisi.');
+
+            return;
+        }
+
+        if(data.pekerja.some(p =>
+            p.id !== editing &&
+            norm(p.nama) === norm(obj.nama)
+        )){
+
+            alert('Nama pekerja sudah terdaftar.');
+
+            return;
+        }
+
+    }
+
+
+    /* VALIDASI ABSENSI */
+
+    if(kind === 'absensi'){
+
+        obj.upah = Number(obj.upah || 0);
+
+        if(!Number.isFinite(obj.upah) || obj.upah < 0){
+
+            alert('Nominal upah tidak valid.');
+
+            return;
+        }
+
+        obj.catatan = (obj.catatan || '').trim();
+
+        if(data.absensi.some(x =>
+
+            x.id !== editing &&
+
+            x.pekerjaId === obj.pekerjaId &&
+
+            x.tanggal === obj.tanggal
+
+        )){
+
+            alert('Presensi untuk tanggal tersebut sudah ada.');
+
+            return;
+        }
+
+    }
+
+
+    /* VALIDASI KATEGORI */
+
+    if(['kasbon','pembayaran'].includes(kind)){
+
+        if(!['harian','borongan','umum'].includes(obj.kategori)){
+
+            alert('Kategori transaksi tidak valid.');
+
+            return;
+        }
+
+        obj.catatan = (obj.catatan || '').trim();
+
+    }
+
+
+    const saveKind = kind;
+    const saveId = editing;
+
+    $('saveBtn').disabled = true;
+
+    $('saveBtn').textContent = 'Menyimpan…';
+
+    try{
+
+        if(saveId){
+
+            await updateDoc(
+                doc(db,saveKind,saveId),
+                obj
+            );
+
+        }else{
+
+            await addDoc(
+                collection(db,saveKind),
+                {
+                    ...obj,
+                    createdAt:serverTimestamp()
+                }
+            );
+
+        }
+
+        $('dlg').close();
+
+    }catch(err){
+
+        alert('Gagal menyimpan: ' + err.message);
+
+    }finally{
+
+        $('saveBtn').disabled = false;
+
+        $('saveBtn').textContent = 'Simpan';
+
+    }
+
+};
+
+
+/* =========================================
+   HAPUS DATA
+========================================= */
+
+async function remove(key){
+
+    if(!admin) return;
+
+    let [k,id] = key.split(':');
+
+    if(k === 'pekerja'){
+
+        let used = [
+            'absensi',
+            'borongan',
+            'kasbon',
+            'pembayaran'
+        ].some(c =>
+            data[c].some(x => x.pekerjaId === id)
+        );
+
+        if(used){
+
+            alert(
+                'Pekerja tidak dapat dihapus karena masih ' +
+                'memiliki riwayat transaksi.'
+            );
+
+            return;
+        }
+
+    }
+
+    if(!confirm(
+        'Hapus catatan ini secara permanen?'
+    )) return;
+
+    try{
+
+        await deleteDoc(doc(db,k,id));
+
+    }catch(e){
+
+        alert(e.message);
+
+    }
+
+}
+
+
+/* =========================================
+   NAVIGASI TAB
+========================================= */
+
+$('tabs').onclick = e => {
+
+    let b = e.target.closest('[data-tab]');
+
+    if(b){
+
+        tab = b.dataset.tab;
+
+        render();
+
+    }
+
+};
+
+
+/* =========================================
+   LOGIN DAN LOGOUT ADMIN
+========================================= */
+
+$('loginBtn').onclick = () => {
+
+    if(admin){
+
+        admin = false;
+
+        $('loginBtn').textContent = 'Admin';
+
+        render();
+
+        return;
+    }
+
+    $('authError').textContent = '';
+
+    $('authDlg').showModal();
+
+};
+
+$('authForm').onsubmit = async e => {
+
+    e.preventDefault();
+
+    $('authError').textContent = 'Memeriksa PIN…';
+
+    try{
+
+        if(!db){
+
+            throw Error('Firebase belum terhubung.');
+
+        }
+
+        let snap = await getDoc(
+            doc(
+                db,
+                'pengaturan',
+                'akses_admin'
+            )
+        );
+
+        let cfg = snap.data();
+
+        if(
+
+            !cfg?.aktif ||
+
+            !/^[0-9]{6}$/.test($('pin').value) ||
+
+            $('pin').value !== cfg.pin
+
+        ){
+
+            throw Error(
+                'PIN salah atau pengaturan admin belum aktif.'
+            );
+
+        }
+
+        admin = true;
+
+        $('authDlg').close();
+
+        $('pin').value = '';
+
+        $('loginBtn').textContent = 'Keluar Admin';
+
+        render();
+
+    }catch(err){
+
+        $('authError').textContent = err.message;
+
+    }
+
+};
+
+
+/* =========================================
+   KONEKSI FIREBASE REALTIME
+========================================= */
+
+if(!window.firebaseConfig || !window.firebaseConfig.apiKey){
+
+    $('setup').classList.remove('hidden');
+
+    $('status').textContent =
+        'Mode demo: belum terhubung.';
+
+    render();
+
+}else{
+
+    try{
+
+        const app = initializeApp(
+            window.firebaseConfig
+        );
+
+        db = getFirestore(app);
+
+        const loaded = new Set();
+        const errors = new Map();
+
+        const updateStatus = () => {
+
+            if(errors.size){
+
+                $('status').textContent =
+                    [...errors.values()].join(' | ');
+
+            }else if(loaded.size === collections.length){
+
+                $('status').textContent =
+                    '● Tersambung ke ndis.Database';
+
+            }else{
+
+                $('status').textContent =
+                    'Memuat data Firebase…';
+
+            }
+
+        };
+
+        for(let k of collections){
+
+            onSnapshot(
+
+                collection(db,k),
+
+                snap => {
+
+                    data[k] = snap.docs.map(d => ({
+
+                        ...d.data(),
+
+                        id:d.id
+
+                    }));
+
+                    loaded.add(k);
+
+                    errors.delete(k);
+
+                    updateStatus();
+
+                    render();
+
+                },
+
+                e => {
+
+                    errors.set(
+                        k,
+                        'Gagal membaca ' + k + ': ' + e.message
+                    );
+
+                    updateStatus();
+
+                }
+
+            );
+
+        }
+
+        render();
+
+    }catch(e){
+
+        $('status').textContent =
+            'Konfigurasi salah: ' + e.message;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
