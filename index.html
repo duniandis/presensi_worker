@@ -82,10 +82,17 @@ label{
     background:#e0eeeb;
     color:#13574d;
 }
-.tabs button.active{background:#0f766e;color:white}
+.tabs button.active{
+    background:#0f766e;
+    color:white;
+}
 .hidden{display:none!important}
 .tablewrap{overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:13px}
+table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:13px;
+}
 th,td{
     text-align:left;
     border-bottom:1px solid #e5ece9;
@@ -117,7 +124,10 @@ dialog::backdrop{background:#0c302e88}
     gap:12px;
     align-items:center;
 }
-.smallbtn{padding:7px 9px;font-size:12px}
+.smallbtn{
+    padding:7px 9px;
+    font-size:12px;
+}
 footer{
     padding:25px;
     text-align:center;
@@ -147,17 +157,41 @@ footer{
     border-radius:12px;
     margin-top:15px;
 }
-.wage-preview .metric{margin-bottom:0;color:#0f766e}
-#upahAbsensi{font-size:22px;font-weight:700;color:#0f766e}
+.wage-preview .metric{
+    margin-bottom:0;
+    color:#0f766e;
+}
+#upahAbsensi{
+    font-size:22px;
+    font-weight:700;
+    color:#0f766e;
+}
+
+/* TOMBOL INPUT DI ATAS */
+
+#adminTools{
+    margin:0 0 12px;
+    padding:10px;
+}
+#actionButtons button{
+    flex:1;
+    min-height:44px;
+}
+#content{
+    margin-top:10px;
+}
+
+/* KARTU RINGKASAN PEKERJA */
 
 .worker-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));
-    gap:14px;
+    gap:10px;
+    align-items:start;
 }
 .worker-card{
     border:1px solid #dce8e4;
-    border-radius:15px;
+    border-radius:13px;
     overflow:hidden;
     background:white;
 }
@@ -168,14 +202,39 @@ footer{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:8px;
+    gap:10px;
+    cursor:pointer;
+    user-select:none;
+    list-style:none;
+}
+.worker-head::-webkit-details-marker{
+    display:none;
+}
+.worker-head::marker{
+    content:'';
 }
 .worker-head h3{
     margin:0;
-    font-size:18px;
+    font-size:17px;
     overflow-wrap:anywhere;
 }
-.worker-body{padding:12px}
+.worker-name{
+    flex:1;
+    min-width:0;
+}
+.worker-arrow{
+    font-size:13px;
+    transition:transform .2s;
+}
+.worker-card[open] .worker-arrow{
+    transform:rotate(180deg);
+}
+.worker-card:not([open]) > .worker-body{
+    display:none;
+}
+.worker-body{
+    padding:12px;
+}
 .salary-box{
     background:#f3f8f6;
     border:1px solid #dce8e4;
@@ -212,7 +271,12 @@ footer{
     border-radius:12px;
     margin-top:12px;
 }
-.salary-total .metric{margin:5px 0 0}
+.salary-total.unpaid{
+    background:#fff0e8;
+}
+.salary-total .metric{
+    margin:5px 0 0;
+}
 .badge{
     border-radius:20px;
     padding:5px 9px;
@@ -220,21 +284,35 @@ footer{
     font-weight:800;
     white-space:nowrap;
 }
-.badge-paid{background:#d5f5e3;color:#146c43}
-.badge-unpaid{background:#ffe1dc;color:#b42318}
-.badge-over{background:#fff0bd;color:#805600}
+.badge-paid{
+    background:#d5f5e3;
+    color:#146c43;
+}
+.badge-unpaid{
+    background:#ffe1dc;
+    color:#b42318;
+}
+.badge-over{
+    background:#fff0bd;
+    color:#805600;
+}
 .general-box{
     background:#fff8e5;
     border:1px solid #f0dfac;
 }
-.general-box .salary-title{color:#805600}
-.search-box{margin-bottom:14px}
+.general-box .salary-title{
+    color:#805600;
+}
+.search-box{
+    margin-bottom:14px;
+}
 @media(max-width:500px){
     .wrap{padding:12px}
     .card{padding:12px}
     .metric{font-size:19px}
     .worker-grid{grid-template-columns:1fr}
     .salary-total .metric{font-size:25px}
+    .worker-head{padding:14px 12px}
 }
 </style>
 </head>
@@ -248,7 +326,10 @@ footer{
                 <h1>PRESENSI</h1>
                 <p>Absensi • Borongan • Kasbon • Penggajian</p>
             </div>
-            <button class="secondary" id="loginBtn">Admin</button>
+
+            <button class="secondary" id="loginBtn">
+                Admin
+            </button>
         </div>
     </div>
 </header>
@@ -264,27 +345,49 @@ footer{
         Menghubungkan Firebase…
     </div>
 
-    <div class="grid" id="metrics" style="margin-top:12px"></div>
+    <div class="grid" id="metrics"
+        style="margin-top:12px">
+    </div>
 
     <div class="tabs" id="tabs">
-        <button data-tab="ringkasan" class="active">Ringkasan</button>
-        <button data-tab="pekerja">Pekerja</button>
-        <button data-tab="absensi">Absensi</button>
-        <button data-tab="borongan">Borongan</button>
-        <button data-tab="kasbon">Kasbon</button>
-        <button data-tab="pembayaran">Bayar Gaji</button>
+
+        <button data-tab="ringkasan" class="active">
+            Ringkasan
+        </button>
+
+        <button data-tab="pekerja">
+            Pekerja
+        </button>
+
+        <button data-tab="absensi">
+            Absensi
+        </button>
+
+        <button data-tab="borongan">
+            Borongan
+        </button>
+
+        <button data-tab="kasbon">
+            Kasbon
+        </button>
+
+        <button data-tab="pembayaran">
+            Bayar Gaji
+        </button>
+
     </div>
 
-    <section id="content" class="card"></section>
+    <!-- TOMBOL INPUT SEKARANG DI ATAS -->
 
     <div id="adminTools" class="card hidden">
-        <h3>Input Admin</h3>
-        <p class="muted">
-            Tindakan tersimpan online.
-            PIN hanya mengunci tampilan, bukan izin database.
-        </p>
+
         <div class="actions" id="actionButtons"></div>
+
     </div>
+
+    <!-- TABEL DAN RINGKASAN -->
+
+    <section id="content" class="card"></section>
 
 </main>
 
@@ -293,31 +396,51 @@ footer{
 </footer>
 
 <dialog id="dlg">
+
     <div class="row">
+
         <h3 id="dlgTitle">Input</h3>
+
         <button class="secondary smallbtn"
-            onclick="document.getElementById('dlg').close()">✕</button>
+            onclick="document.getElementById('dlg').close()">
+            ✕
+        </button>
+
     </div>
 
     <form id="entryForm">
+
         <div id="fields"></div>
 
         <div class="actions" style="margin-top:15px">
-            <button type="submit" id="saveBtn">Simpan</button>
+
+            <button type="submit" id="saveBtn">
+                Simpan
+            </button>
+
             <button type="button" class="secondary"
                 onclick="document.getElementById('dlg').close()">
                 Batal
             </button>
+
         </div>
+
     </form>
+
 </dialog>
 
 <dialog id="authDlg">
+
     <h3>Masuk Admin</h3>
-    <p class="muted">Masukkan PIN 6 digit dari Firestore.</p>
+
+    <p class="muted">
+        Masukkan PIN 6 digit dari Firestore.
+    </p>
 
     <form id="authForm">
+
         <label>PIN Admin</label>
+
         <input id="pin"
             type="password"
             inputmode="numeric"
@@ -329,13 +452,20 @@ footer{
         <p id="authError" class="muted"></p>
 
         <div class="actions">
-            <button type="submit">Masuk</button>
+
+            <button type="submit">
+                Masuk
+            </button>
+
             <button type="button" class="secondary"
                 onclick="document.getElementById('authDlg').close()">
                 Batal
             </button>
+
         </div>
+
     </form>
+
 </dialog>
 
 <script src="config.js"></script>
@@ -357,6 +487,7 @@ import {
     serverTimestamp,
     getDoc
 } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+
 
 const $ = id => document.getElementById(id);
 
@@ -381,6 +512,10 @@ let editing = null;
 let kind = '';
 let searchWorker = '';
 
+/* MENYIMPAN STATUS KARTU TERBUKA */
+
+const openedWorkers = new Set();
+
 let data = {
     pekerja:[],
     absensi:[],
@@ -403,6 +538,7 @@ const fmtDate = d =>
     d ? new Date(d + 'T12:00:00').toLocaleDateString('id-ID') : '';
 
 const today = () => {
+
     let d = new Date();
 
     return [
@@ -410,6 +546,7 @@ const today = () => {
         String(d.getMonth()+1).padStart(2,'0'),
         String(d.getDate()).padStart(2,'0')
     ].join('-');
+
 };
 
 const pname = (id,x) =>
@@ -426,13 +563,17 @@ const norm = n =>
 const workerName = x => pname(x.pekerjaId,x);
 
 const workerNames = () => [
+
     ...new Map([
+
         ...data.pekerja.map(p => p.nama),
         ...data.absensi.map(workerName),
         ...data.borongan.map(workerName),
         ...data.kasbon.map(workerName),
         ...data.pembayaran.map(workerName)
+
     ].filter(n => n).map(n => [norm(n),n])).values()
+
 ].sort((a,b) => a.localeCompare(b,'id'));
 
 
@@ -441,10 +582,14 @@ const workerNames = () => [
 ========================================= */
 
 const workerSelect = x => `
+
     <label>Nama pekerja</label>
 
     <select name="pekerjaId" id="pilihPekerja">
-        <option value="">-- Pilih / ketik manual --</option>
+
+        <option value="">
+            -- Pilih / ketik manual --
+        </option>
 
         ${workerNames()
             .filter(n => n !== 'Pekerja dihapus')
@@ -459,11 +604,15 @@ const workerSelect = x => `
                 : false;
 
             return `
+
                 <option
                     value="${esc(p?.id || 'manual:' + n)}"
                     ${selected ? 'selected' : ''}>
+
                     ${esc(n)}
+
                 </option>
+
             `;
 
         }).join('')}
@@ -475,6 +624,7 @@ const workerSelect = x => `
                 Pekerja dihapus
                </option>`
             : ''}
+
     </select>
 
     <label>Atau ketik nama baru</label>
@@ -489,6 +639,7 @@ const workerSelect = x => `
             ) ? x.namaManual : ''
         )}"
         placeholder="Nama pekerja">
+
 `;
 
 
@@ -508,20 +659,26 @@ const kategori = x => {
     return ['harian','borongan'].includes(v)
         ? v
         : 'umum';
+
 };
 
 const kategoriLabel = x => ({
+
     harian:'Harian',
     borongan:'Borongan',
     umum:'Umum'
+
 })[kategori(x)];
+
 
 const kategoriField = (x,k) => `
 
     <label>
+
         ${k === 'kasbon'
             ? 'Jenis Kasbon / DP'
             : 'Jenis Pembayaran Gaji'}
+
     </label>
 
     <select name="kategori" required>
@@ -536,7 +693,9 @@ const kategoriField = (x,k) => `
                 ${(x ? kategori(x) : 'harian') === v
                     ? 'selected'
                     : ''}>
+
                 ${l}
+
             </option>
 
         `).join('')}
@@ -544,8 +703,10 @@ const kategoriField = (x,k) => `
     </select>
 
     <p class="muted">
+
         Pilih kategori sesuai peruntukan transaksi.
         Kategori Umum tetap mengurangi total sisa gaji.
+
     </p>
 
 `;
@@ -568,6 +729,7 @@ const wage = a => {
     }
 
     return 0;
+
 };
 
 
@@ -629,19 +791,32 @@ function sums(pid){
         sisaBorongan,
         sisa
     };
+
 }
 
 
 /* =========================================
-   KARTU RINGKASAN PEKERJA
+   BARIS RINCIAN GAJI
 ========================================= */
 
 const salaryRow = (label,value,cls='') => `
+
     <div class="salary-row">
+
         <span>${esc(label)}</span>
-        <strong class="${cls}">${money(value)}</strong>
+
+        <strong class="${cls}">
+            ${money(value)}
+        </strong>
+
     </div>
+
 `;
+
+
+/* =========================================
+   KARTU RINGKASAN BUKA TUTUP
+========================================= */
 
 function workerCard(n){
 
@@ -663,17 +838,26 @@ function workerCard(n){
 
     return `
 
-        <div class="worker-card">
+        <details
+            class="worker-card"
+            data-worker="${esc(norm(n))}"
+            ${openedWorkers.has(norm(n)) ? 'open' : ''}>
 
-            <div class="worker-head">
+            <summary class="worker-head">
 
-                <h3>${esc(n)}</h3>
+                <div class="worker-name">
+
+                    <h3>${esc(n)}</h3>
+
+                </div>
 
                 <span class="badge ${badgeClass}">
                     ${status}
                 </span>
 
-            </div>
+                <span class="worker-arrow">▼</span>
+
+            </summary>
 
             <div class="worker-body">
 
@@ -683,16 +867,28 @@ function workerCard(n){
                         UPAH HARIAN
                     </div>
 
-                    ${salaryRow('Total upah harian',t.h)}
+                    ${salaryRow(
+                        'Total upah harian',
+                        t.h
+                    )}
 
-                    ${salaryRow('Kasbon harian',t.kh)}
+                    ${salaryRow(
+                        'Kasbon harian',
+                        t.kh
+                    )}
 
-                    ${salaryRow('Harian dibayar',t.ph,'ok')}
+                    ${salaryRow(
+                        'Harian dibayar',
+                        t.ph,
+                        'ok'
+                    )}
 
                     <div class="salary-line"></div>
 
                     ${salaryRow(
-                        umum ? 'Saldo harian teralokasi' : 'Sisa harian',
+                        umum
+                            ? 'Sisa harian sebelum umum'
+                            : 'Sisa harian',
                         t.sisaHarian,
                         t.sisaHarian > 0 ? 'red' : 'ok'
                     )}
@@ -705,16 +901,28 @@ function workerCard(n){
                         UPAH BORONGAN
                     </div>
 
-                    ${salaryRow('Total upah borongan',t.b)}
+                    ${salaryRow(
+                        'Total upah borongan',
+                        t.b
+                    )}
 
-                    ${salaryRow('Kasbon / DP borongan',t.kb)}
+                    ${salaryRow(
+                        'Kasbon / DP borongan',
+                        t.kb
+                    )}
 
-                    ${salaryRow('Borongan dibayar',t.pb,'ok')}
+                    ${salaryRow(
+                        'Borongan dibayar',
+                        t.pb,
+                        'ok'
+                    )}
 
                     <div class="salary-line"></div>
 
                     ${salaryRow(
-                        umum ? 'Saldo borongan teralokasi' : 'Sisa borongan',
+                        umum
+                            ? 'Sisa borongan sebelum umum'
+                            : 'Sisa borongan',
                         t.sisaBorongan,
                         t.sisaBorongan > 0 ? 'red' : 'ok'
                     )}
@@ -729,17 +937,26 @@ function workerCard(n){
                             TRANSAKSI UMUM
                         </div>
 
-                        ${salaryRow('Kasbon umum',t.ku)}
+                        ${salaryRow(
+                            'Kasbon umum',
+                            t.ku
+                        )}
 
-                        ${salaryRow('Pembayaran umum',t.pu)}
+                        ${salaryRow(
+                            'Pembayaran umum',
+                            t.pu
+                        )}
 
                         <p class="muted">
+
                             Transaksi ini belum dialokasikan
                             ke harian atau borongan,
                             tetapi sudah mengurangi total
                             sisa gaji.
+
                             Edit transaksi untuk menentukan
                             kategorinya.
+
                         </p>
 
                     </div>
@@ -752,17 +969,34 @@ function workerCard(n){
                         TOTAL KESELURUHAN
                     </div>
 
-                    ${salaryRow('Total pendapatan',t.totalUpah)}
+                    ${salaryRow(
+                        'Total pendapatan',
+                        t.totalUpah
+                    )}
 
-                    ${salaryRow('Total kasbon',t.k)}
+                    ${salaryRow(
+                        'Total kasbon',
+                        t.k
+                    )}
 
-                    ${salaryRow('Total gaji dibayar',t.p,'ok')}
+                    ${salaryRow(
+                        'Total gaji dibayar',
+                        t.p,
+                        'ok'
+                    )}
 
-                    ${salaryRow('Total uang diterima',t.k+t.p,'ok')}
+                    <div class="salary-line"></div>
+
+                    ${salaryRow(
+                        'Total uang diterima',
+                        t.k+t.p,
+                        'ok'
+                    )}
 
                 </div>
 
-                <div class="salary-total">
+                <div class="salary-total
+                    ${t.sisa > 0 ? 'unpaid' : ''}">
 
                     <div class="muted">
 
@@ -772,7 +1006,8 @@ function workerCard(n){
 
                     </div>
 
-                    <div class="metric ${t.sisa > 0 ? 'red' : 'ok'}">
+                    <div class="metric
+                        ${t.sisa > 0 ? 'red' : 'ok'}">
 
                         ${money(Math.abs(t.sisa))}
 
@@ -782,10 +1017,16 @@ function workerCard(n){
 
             </div>
 
-        </div>
+        </details>
 
     `;
+
 }
+
+
+/* =========================================
+   RENDER KARTU PEKERJA
+========================================= */
 
 function renderWorkerCards(){
 
@@ -798,8 +1039,37 @@ function renderWorkerCards(){
     );
 
     el.innerHTML = names.length
+
         ? names.map(workerCard).join('')
+
         : '<p class="muted">Tidak ada pekerja.</p>';
+
+
+    /* MENGINGAT KARTU YANG SEDANG TERBUKA */
+
+    el.querySelectorAll('details[data-worker]')
+        .forEach(card => {
+
+            card.addEventListener('toggle',() => {
+
+                if(!card.isConnected) return;
+
+                let key = card.dataset.worker;
+
+                if(card.open){
+
+                    openedWorkers.add(key);
+
+                }else{
+
+                    openedWorkers.delete(key);
+
+                }
+
+            });
+
+        });
+
 }
 
 
@@ -813,10 +1083,12 @@ function render(){
 
     $('metrics').innerHTML = [
 
-        ['Jumlah Pekerja',
+        [
+            'Jumlah Pekerja',
             workerNames().filter(n =>
                 n !== 'Pekerja dihapus'
-            ).length],
+            ).length
+        ],
 
         ['Upah Harian',money(s.h)],
 
@@ -835,45 +1107,66 @@ function render(){
     ].map(([k,v]) => `
 
         <div class="card">
+
             <div class="muted">${k}</div>
+
             <div class="metric">${v}</div>
+
         </div>
 
     `).join('');
 
+
     document.querySelectorAll('[data-tab]').forEach(b =>
+
         b.classList.toggle(
             'active',
             b.dataset.tab === tab
         )
+
     );
 
-    $('adminTools').classList.toggle('hidden',!admin);
 
-    $('actionButtons').innerHTML = (
+    /* TOMBOL INPUT DI ATAS TABEL */
+
+    $('adminTools').classList.toggle(
+        'hidden',
+        !admin || tab === 'ringkasan'
+    );
+
+    $('actionButtons').innerHTML =
+
         tab === 'ringkasan'
-            ? collections
-            : [tab]
-    ).map(k => `
 
-        <button data-new="${k}">
-            + ${titles[k]}
-        </button>
+        ? ''
 
-    `).join('');
+        : `
+
+            <button data-new="${tab}">
+
+                + Tambah ${titles[tab]}
+
+            </button>
+
+        `;
+
 
     document.querySelectorAll('[data-new]').forEach(b => {
+
         b.onclick = () => formFor(b.dataset.new);
+
     });
 
 
-    /* RINGKASAN */
+    /* TAB RINGKASAN */
 
     if(tab === 'ringkasan'){
 
         $('content').innerHTML = `
 
-            <h3>Rekap Seluruh Pekerja</h3>
+            <h3 style="margin-top:3px">
+                Rekap Seluruh Pekerja
+            </h3>
 
             <input
                 type="search"
@@ -882,18 +1175,28 @@ function render(){
                 placeholder="Cari nama pekerja..."
                 value="${esc(searchWorker)}">
 
+            <p class="muted" style="margin-top:0">
+
+                Klik nama pekerja untuk melihat detail gaji.
+
+            </p>
+
             <div class="worker-grid" id="workerCards"></div>
 
         `;
 
         $('searchWorker').oninput = e => {
+
             searchWorker = e.target.value;
+
             renderWorkerCards();
+
         };
 
         renderWorkerCards();
 
         return;
+
     }
 
 
@@ -958,44 +1261,69 @@ function render(){
             if(tab === 'pekerja'){
 
                 v = [
+
                     x.nama,
+
                     money(x.upah),
+
                     `${x.mulai || '-'}–${x.selesai || '-'}`,
+
                     x.pekerjaan || '-'
+
                 ];
 
             }else if(tab === 'absensi'){
 
                 v = [
+
                     fmtDate(x.tanggal),
+
                     workerName(x),
+
                     x.status,
+
                     money(wage(x)),
+
                     x.catatan || '-'
+
                 ];
 
             }else if(tab === 'borongan'){
 
                 v = [
+
                     fmtDate(x.tanggal),
+
                     workerName(x),
+
                     x.pekerjaan,
+
                     `${x.jumlah} ${x.satuan || 'unit'}`,
+
                     money(x.tarif),
+
                     money(x.jumlah * x.tarif)
+
                 ];
 
             }else{
 
                 v = [
+
                     fmtDate(x.tanggal),
+
                     workerName(x),
+
                     kategoriLabel(x),
+
                     money(x.nominal),
+
                     x.catatan || '-'
+
                 ];
 
             }
+
 
             if(admin){
 
@@ -1007,12 +1335,16 @@ function render(){
 
                         <button class="secondary smallbtn"
                             data-edit="${esc(tab+':'+x.id)}">
+
                             Edit
+
                         </button>
 
                         <button class="danger smallbtn"
                             data-delete="${esc(tab+':'+x.id)}">
+
                             Hapus
+
                         </button>
 
                     `
@@ -1025,30 +1357,47 @@ function render(){
 
         });
 
+
     $('content').innerHTML = `
 
-        <h3>
+        <h3 style="margin-top:3px">
 
             ${({
+
                 pekerja:'Daftar Pekerja',
+
                 absensi:'Riwayat Absensi',
+
                 borongan:'Pekerjaan Borongan',
+
                 kasbon:'Riwayat Kasbon',
+
                 pembayaran:'Pembayaran Gaji'
+
             })[tab]}
 
         </h3>
 
+        <p class="muted">
+
+            Jumlah data: ${rows.length}
+
+        </p>
+
     ` + makeTable(
 
         [
+
             ...headers[tab],
+
             ...(admin ? ['Aksi'] : [])
+
         ],
 
         rows
 
     );
+
 
     document.querySelectorAll('[data-edit]').forEach(b => {
 
@@ -1056,17 +1405,23 @@ function render(){
 
             let [k,id] = b.dataset.edit.split(':');
 
-            formFor(
-                k,
-                data[k].find(x => x.id === id)
-            );
+            let x = data[k].find(x => x.id === id);
+
+            if(x){
+
+                formFor(k,x);
+
+            }
 
         };
 
     });
 
+
     document.querySelectorAll('[data-delete]').forEach(b => {
+
         b.onclick = () => remove(b.dataset.delete);
+
     });
 
 }
@@ -1085,13 +1440,17 @@ function makeTable(head,rows){
             <table>
 
                 <thead>
+
                     <tr>
 
                         ${head.map(h => `
+
                             <th>${esc(h)}</th>
+
                         `).join('')}
 
                     </tr>
+
                 </thead>
 
                 <tbody>
@@ -1117,9 +1476,13 @@ function makeTable(head,rows){
                     `).join('') : `
 
                         <tr>
+
                             <td colspan="${head.length}">
+
                                 Belum ada data.
+
                             </td>
+
                         </tr>
 
                     `}
@@ -1131,6 +1494,7 @@ function makeTable(head,rows){
         </div>
 
     `;
+
 }
 
 
@@ -1167,17 +1531,26 @@ function formFor(k,x=null){
     if(!admin) return;
 
     kind = k;
+
     editing = x?.id || null;
 
     $('dlgTitle').textContent =
+
         (x ? 'Edit ' : 'Tambah ') + titles[k];
 
+
     let date = field(
+
         'tanggal',
+
         'Tanggal',
+
         'date',
+
         x?.tanggal || today()
+
     );
+
 
     let workers = `
 
@@ -1210,16 +1583,22 @@ function formFor(k,x=null){
 
     `;
 
+
     if(k === 'absensi' && !data.pekerja.length && !x){
 
         alert('Tambahkan pekerja dahulu.');
 
         return;
+
     }
 
+
     if(['borongan','kasbon','pembayaran'].includes(k)){
+
         workers = workerSelect(x);
+
     }
+
 
     let fields = '';
 
@@ -1231,44 +1610,72 @@ function formFor(k,x=null){
         fields =
 
             field(
+
                 'nama',
+
                 'Nama Pekerja',
+
                 'text',
+
                 x?.nama || ''
+
             ) +
 
             field(
+
                 'upah',
+
                 'Upah Default per Hari (Rp)',
+
                 'number',
+
                 x?.upah ?? 50000,
+
                 'min="0" step="1"'
+
             ) +
 
             `<p class="muted">
+
                 Upah default hanya sebagai nominal awal.
                 Upah dapat diubah setiap input absensi.
+
             </p>` +
 
             field(
+
                 'mulai',
+
                 'Jam mulai',
+
                 'time',
+
                 x?.mulai || '19:00'
+
             ) +
 
             field(
+
                 'selesai',
+
                 'Jam selesai',
+
                 'time',
+
                 x?.selesai || '22:00'
+
             ) +
 
             field(
+
                 'pekerjaan',
+
                 'Jenis pekerjaan utama',
+
                 'text',
+
                 x?.pekerjaan || 'Harian'
+
             );
 
     }
@@ -1282,6 +1689,7 @@ function formFor(k,x=null){
             p => p.id === x?.pekerjaId
         ) || data.pekerja[0];
 
+
         fields = date + workers + `
 
             <label>Status</label>
@@ -1289,22 +1697,32 @@ function formFor(k,x=null){
             <select name="status" id="statusAbsensi">
 
                 ${[
+
                     'Hadir',
+
                     'Tidak Hadir',
+
                     'Setengah Hari',
+
                     'Izin',
+
                     'Sakit',
+
                     'Libur'
+
                 ].map(v => `
 
                     <option
                         ${x?.status === v ? 'selected' : ''}>
+
                         ${v}
+
                     </option>
 
                 `).join('')}
 
             </select>
+
 
             <div id="wageInputArea">
 
@@ -1320,22 +1738,31 @@ function formFor(k,x=null){
                     value="${esc(x?.upah ?? p?.upah ?? 0)}"
                     required>
 
+
                 <div class="quick-wage">
 
                     ${[
+
                         50000,
+
                         75000,
+
                         100000,
+
                         150000
+
                     ].map(n => `
 
                         <button type="button" data-upah="${n}">
+
                             ${money(n)}
+
                         </button>
 
                     `).join('')}
 
                 </div>
+
 
                 <button
                     type="button"
@@ -1347,13 +1774,18 @@ function formFor(k,x=null){
 
                 </button>
 
+
                 <p class="muted">
+
                     Nominal upah dapat diubah sesuai
                     pekerjaan dan tambahan lembur.
+
                     Setengah Hari dihitung 50%.
+
                 </p>
 
             </div>
+
 
             <label>Catatan Pekerjaan / Lembur</label>
 
@@ -1363,14 +1795,19 @@ function formFor(k,x=null){
                 placeholder="Contoh: Lembur tambahan 3 jam"
             >${esc(x?.catatan || '')}</textarea>
 
+
             <div class="wage-preview">
 
                 <div class="muted">
+
                     Total Upah Hari Ini
+
                 </div>
 
                 <div class="metric" id="previewUpah">
+
                     Rp0
+
                 </div>
 
             </div>
@@ -1387,41 +1824,69 @@ function formFor(k,x=null){
         fields = date + workers +
 
             field(
+
                 'pekerjaan',
+
                 'Jenis pekerjaan',
+
                 'text',
+
                 x?.pekerjaan || 'Isi polybag'
+
             ) +
 
             field(
+
                 'jumlah',
+
                 'Jumlah',
+
                 'number',
+
                 x?.jumlah ?? 1,
+
                 'min="0" step="any"'
+
             ) +
 
             field(
+
                 'satuan',
+
                 'Satuan',
+
                 'text',
+
                 x?.satuan || 'polybag'
+
             ) +
 
             field(
+
                 'tarif',
+
                 'Tarif per satuan (Rp)',
+
                 'number',
+
                 x?.tarif ?? 0,
+
                 'min="0" step="any"'
+
             ) +
 
             `<div class="wage-preview">
 
-                <div class="muted">Total Upah Borongan</div>
+                <div class="muted">
+
+                    Total Upah Borongan
+
+                </div>
 
                 <div class="metric" id="previewBorongan">
+
                     Rp0
+
                 </div>
 
             </div>`;
@@ -1438,11 +1903,17 @@ function formFor(k,x=null){
             kategoriField(x,k) +
 
             field(
+
                 'nominal',
+
                 'Nominal (Rp)',
+
                 'number',
+
                 x?.nominal ?? 0,
-                'min="0" step="1"'
+
+                'min="0" step="1" inputmode="numeric"'
+
             ) +
 
             `<label>Catatan</label>
@@ -1455,6 +1926,7 @@ function formFor(k,x=null){
 
     }
 
+
     $('fields').innerHTML = fields;
 
 
@@ -1463,64 +1935,114 @@ function formFor(k,x=null){
     if(k === 'absensi'){
 
         const sel = $('absensiPekerja');
+
         const upah = $('upahAbsensi');
+
         const status = $('statusAbsensi');
+
 
         const updatePreview = () => {
 
             const total = wage({
+
                 status:status.value,
+
                 upah:Number(upah.value) || 0
+
             });
+
 
             $('previewUpah').textContent = money(total);
 
+
             const dibayar = [
+
                 'Hadir',
+
                 'Setengah Hari'
+
             ].includes(status.value);
 
+
             $('wageInputArea').classList.toggle(
+
                 'hidden',
+
                 !dibayar
+
             );
 
+
             upah.required = dibayar;
+
 
             $('fields')
                 .querySelectorAll('[data-upah]')
                 .forEach(btn => {
 
                     btn.classList.toggle(
+
                         'active',
+
                         Number(btn.dataset.upah) ===
+
                         Number(upah.value)
+
                     );
 
                 });
 
         };
 
+
         const setDefaultWage = () => {
 
             let p = data.pekerja.find(
+
                 p => p.id === sel.value
+
             );
 
             if(p){
+
                 upah.value = p.upah ?? 0;
+
             }
 
             updatePreview();
+
         };
 
-        sel.addEventListener('change',setDefaultWage);
+
+        sel.addEventListener(
+
+            'change',
+
+            setDefaultWage
+
+        );
+
 
         $('resetUpah').onclick = setDefaultWage;
 
-        upah.addEventListener('input',updatePreview);
 
-        status.addEventListener('change',updatePreview);
+        upah.addEventListener(
+
+            'input',
+
+            updatePreview
+
+        );
+
+
+        status.addEventListener(
+
+            'change',
+
+            updatePreview
+
+        );
+
 
         $('fields')
             .querySelectorAll('[data-upah]')
@@ -1536,7 +2058,9 @@ function formFor(k,x=null){
 
             });
 
+
         updatePreview();
+
     }
 
 
@@ -1550,20 +2074,40 @@ function formFor(k,x=null){
         const tarif = $('fields')
             .querySelector('[name="tarif"]');
 
+
         const updateBorongan = () => {
 
             $('previewBorongan').textContent = money(
+
                 Number(jumlah.value || 0) *
+
                 Number(tarif.value || 0)
+
             );
 
         };
 
-        jumlah.addEventListener('input',updateBorongan);
 
-        tarif.addEventListener('input',updateBorongan);
+        jumlah.addEventListener(
+
+            'input',
+
+            updateBorongan
+
+        );
+
+
+        tarif.addEventListener(
+
+            'input',
+
+            updateBorongan
+
+        );
+
 
         updateBorongan();
+
     }
 
 
@@ -1572,7 +2116,9 @@ function formFor(k,x=null){
     if(['borongan','kasbon','pembayaran'].includes(k)){
 
         let sel = $('pilihPekerja');
+
         let inp = $('namaPekerjaManual');
+
 
         const sync = () => {
 
@@ -1581,17 +2127,23 @@ function formFor(k,x=null){
             inp.required = !sel.value;
 
             if(sel.value){
+
                 inp.value = '';
+
             }
 
         };
 
+
         sel.addEventListener('change',sync);
 
         sync();
+
     }
 
+
     $('dlg').showModal();
+
 }
 
 
@@ -1605,15 +2157,20 @@ $('entryForm').onsubmit = async e => {
 
     if(!admin) return;
 
+
     if(!db){
 
         alert('Firebase belum terhubung.');
 
         return;
+
     }
 
+
     let obj = Object.fromEntries(
+
         new FormData(e.target).entries()
+
     );
 
 
@@ -1622,8 +2179,11 @@ $('entryForm').onsubmit = async e => {
     if(['borongan','kasbon','pembayaran'].includes(kind)){
 
         obj.namaManual = (obj.namaManual || '')
+
             .trim()
+
             .replace(/\s+/g,' ');
+
 
         if(obj.pekerjaId?.startsWith('manual:')){
 
@@ -1633,12 +2193,15 @@ $('entryForm').onsubmit = async e => {
 
         }
 
+
         if(!obj.pekerjaId && !obj.namaManual){
 
             alert('Pilih pekerja atau isi nama manual.');
 
             return;
+
         }
+
 
         if(obj.pekerjaId){
 
@@ -1647,8 +2210,11 @@ $('entryForm').onsubmit = async e => {
         }else{
 
             let registered = data.pekerja.find(
+
                 p => norm(p.nama) === norm(obj.namaManual)
+
             );
+
 
             if(registered){
 
@@ -1671,11 +2237,13 @@ $('entryForm').onsubmit = async e => {
 
             obj[n] = Number(obj[n]);
 
+
             if(!Number.isFinite(obj[n]) || obj[n] < 0){
 
                 alert('Nominal atau jumlah tidak valid.');
 
                 return;
+
             }
 
         }
@@ -1688,24 +2256,33 @@ $('entryForm').onsubmit = async e => {
     if(kind === 'pekerja'){
 
         obj.nama = (obj.nama || '')
+
             .trim()
+
             .replace(/\s+/g,' ');
+
 
         if(!obj.nama){
 
             alert('Nama pekerja wajib diisi.');
 
             return;
+
         }
 
+
         if(data.pekerja.some(p =>
+
             p.id !== editing &&
+
             norm(p.nama) === norm(obj.nama)
+
         )){
 
             alert('Nama pekerja sudah terdaftar.');
 
             return;
+
         }
 
     }
@@ -1717,14 +2294,18 @@ $('entryForm').onsubmit = async e => {
 
         obj.upah = Number(obj.upah || 0);
 
+
         if(!Number.isFinite(obj.upah) || obj.upah < 0){
 
             alert('Nominal upah tidak valid.');
 
             return;
+
         }
 
+
         obj.catatan = (obj.catatan || '').trim();
+
 
         if(data.absensi.some(x =>
 
@@ -1739,6 +2320,7 @@ $('entryForm').onsubmit = async e => {
             alert('Presensi untuk tanggal tersebut sudah ada.');
 
             return;
+
         }
 
     }
@@ -1753,7 +2335,9 @@ $('entryForm').onsubmit = async e => {
             alert('Kategori transaksi tidak valid.');
 
             return;
+
         }
+
 
         obj.catatan = (obj.catatan || '').trim();
 
@@ -1761,38 +2345,53 @@ $('entryForm').onsubmit = async e => {
 
 
     const saveKind = kind;
+
     const saveId = editing;
+
 
     $('saveBtn').disabled = true;
 
     $('saveBtn').textContent = 'Menyimpan…';
+
 
     try{
 
         if(saveId){
 
             await updateDoc(
+
                 doc(db,saveKind,saveId),
+
                 obj
+
             );
 
         }else{
 
             await addDoc(
+
                 collection(db,saveKind),
+
                 {
+
                     ...obj,
+
                     createdAt:serverTimestamp()
+
                 }
+
             );
 
         }
 
+
         $('dlg').close();
+
 
     }catch(err){
 
         alert('Gagal menyimpan: ' + err.message);
+
 
     }finally{
 
@@ -1815,32 +2414,61 @@ async function remove(key){
 
     let [k,id] = key.split(':');
 
+
     if(k === 'pekerja'){
 
+        let p = data.pekerja.find(x => x.id === id);
+
         let used = [
+
             'absensi',
+
             'borongan',
+
             'kasbon',
+
             'pembayaran'
+
         ].some(c =>
-            data[c].some(x => x.pekerjaId === id)
+
+            data[c].some(x =>
+
+                x.pekerjaId === id ||
+
+                (
+                    p &&
+                    x.namaManual &&
+                    norm(x.namaManual) === norm(p.nama)
+                )
+
+            )
+
         );
+
 
         if(used){
 
             alert(
+
                 'Pekerja tidak dapat dihapus karena masih ' +
+
                 'memiliki riwayat transaksi.'
+
             );
 
             return;
+
         }
 
     }
 
+
     if(!confirm(
+
         'Hapus catatan ini secara permanen?'
+
     )) return;
+
 
     try{
 
@@ -1863,9 +2491,21 @@ $('tabs').onclick = e => {
 
     let b = e.target.closest('[data-tab]');
 
+
     if(b){
 
         tab = b.dataset.tab;
+
+
+        /* TUTUP SEMUA KARTU SAAT KEMBALI
+           KE TAB RINGKASAN */
+
+        if(tab === 'ringkasan'){
+
+            openedWorkers.clear();
+
+        }
+
 
         render();
 
@@ -1889,7 +2529,9 @@ $('loginBtn').onclick = () => {
         render();
 
         return;
+
     }
+
 
     $('authError').textContent = '';
 
@@ -1897,11 +2539,14 @@ $('loginBtn').onclick = () => {
 
 };
 
+
 $('authForm').onsubmit = async e => {
 
     e.preventDefault();
 
+
     $('authError').textContent = 'Memeriksa PIN…';
+
 
     try{
 
@@ -1911,15 +2556,24 @@ $('authForm').onsubmit = async e => {
 
         }
 
+
         let snap = await getDoc(
+
             doc(
+
                 db,
+
                 'pengaturan',
+
                 'akses_admin'
+
             )
+
         );
 
+
         let cfg = snap.data();
+
 
         if(
 
@@ -1927,25 +2581,33 @@ $('authForm').onsubmit = async e => {
 
             !/^[0-9]{6}$/.test($('pin').value) ||
 
-            $('pin').value !== cfg.pin
+            $('pin').value !== String(cfg.pin)
 
         ){
 
             throw Error(
+
                 'PIN salah atau pengaturan admin belum aktif.'
+
             );
 
         }
 
+
         admin = true;
+
 
         $('authDlg').close();
 
+
         $('pin').value = '';
+
 
         $('loginBtn').textContent = 'Keluar Admin';
 
+
         render();
+
 
     }catch(err){
 
@@ -1964,44 +2626,60 @@ if(!window.firebaseConfig || !window.firebaseConfig.apiKey){
 
     $('setup').classList.remove('hidden');
 
+
     $('status').textContent =
+
         'Mode demo: belum terhubung.';
 
+
     render();
+
 
 }else{
 
     try{
 
         const app = initializeApp(
+
             window.firebaseConfig
+
         );
+
 
         db = getFirestore(app);
 
+
         const loaded = new Set();
+
         const errors = new Map();
+
 
         const updateStatus = () => {
 
             if(errors.size){
 
                 $('status').textContent =
+
                     [...errors.values()].join(' | ');
+
 
             }else if(loaded.size === collections.length){
 
                 $('status').textContent =
+
                     '● Tersambung ke ndis.Database';
+
 
             }else{
 
                 $('status').textContent =
+
                     'Memuat data Firebase…';
 
             }
 
         };
+
 
         for(let k of collections){
 
@@ -2019,11 +2697,15 @@ if(!window.firebaseConfig || !window.firebaseConfig.apiKey){
 
                     }));
 
+
                     loaded.add(k);
+
 
                     errors.delete(k);
 
+
                     updateStatus();
+
 
                     render();
 
@@ -2032,9 +2714,13 @@ if(!window.firebaseConfig || !window.firebaseConfig.apiKey){
                 e => {
 
                     errors.set(
+
                         k,
+
                         'Gagal membaca ' + k + ': ' + e.message
+
                     );
+
 
                     updateStatus();
 
@@ -2044,11 +2730,14 @@ if(!window.firebaseConfig || !window.firebaseConfig.apiKey){
 
         }
 
+
         render();
+
 
     }catch(e){
 
         $('status').textContent =
+
             'Konfigurasi salah: ' + e.message;
 
     }
